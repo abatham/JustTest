@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <string.h>
 
 #define SERVER_LIMIT 10
 
@@ -18,14 +19,18 @@ class TCPListnr{
 		~TCPListnr();
 		int init();
 		int run();
-		virtual int receiveData();
-		virtual int sendData();		
+		virtual int receiveData(int sock);
+		virtual int sendData(int sock, const char * buff, int len);	
+		virtual void onConnection(int sock);
+		int broadcastMsg(int sock, const char * buff, int len);	
+		void disp();
 	private:
 
 		string m_ip;
 		int m_port;
 		int m_servSock;
 		struct sockaddr_in m_servAddr;
-		fd_set master;
+		fd_set m_master;
+		char m_msg[2048];
 
 };
